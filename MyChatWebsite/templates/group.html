@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Group</title>
+{% endblock head %}
+
+{% block body %}
+<h1>Groups</h1>
+<br>
+{% if group_list != [] %}
+    {% for group in group_list %}
+        <div><a href="/groupchat/{{ group.id }}">{{ group.name }}</a> <a href="/quit-group?id={{ group.id }}"><button>Quit</button></a></div>
+    {% endfor %}
+{% else %}
+    <p>You are currently not in any group</p>
+{% endif %}
+<a href="/CreateGroup"><button>Create Group</button></a>
+{% endblock body %}

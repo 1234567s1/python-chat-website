@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Group Invite</title>
+{% endblock head %}
+
+{% block body %}
+{% if adding %}
+    {% if users == [] %}
+        <p>not found</p>
+    {% endif %}
+{% for user in users %}
+    {% if user == current_user %}
+    {% elif user.id|string in people_id %}
+        <div><a href="/chat?id={{ user.id }}">{{ user.usrname }}</a> <a href="/groupchat/{{ id }}/remove_user?id={{ user.id }}"><button>-</button></a></div>
+    {% else %}
+        <div>{{ user.usrname }} <a href="/groupchat/{{ id }}/add_user?id={{ user.id }}"><button>+</button></a></div>
+    {% endif %}
+{% endfor %}
+{% else %}
+{% if people != [] %}
+    {% for person in people %}
+        {% if person == current_user %}
+        {% else %}
+            <div><a href="/chat?id={{ person.id }}">{{ person.usrname }}</a> <a href="/groupchat/{{ id }}/remove_user?id={{ person.id }}"><button>-</button></a></div>
+        {% endif %}
+    {% endfor %}
+{% else %}
+<p>You are the only one in this group, invite some people now</p>
+{% endif %}
+{% endif %}
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.name.label(class="form-control-label") }}
+            {% if form.name.errors %}
+                {{ form.name(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.name.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.name(class="form-control form-control-lg") }}
+            {% endif %}
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+    </div>
+</form>
+{% endblock body %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Friends</title>
+{% endblock head %}
+
+{% block body %}
+<h1>Friends</h1>
+    {% if adding %}
+        {% if users == [] %}
+        <p>not found</p>
+        {% endif %}
+        {% for user in users %}
+            {% if user == current_user %}
+            {% elif user.id in friend_ids %}
+                <div><a href="/chat?id={{ user.id }}">{{ user.usrname }}</a> <a href="/del-friend?id={{ user.id }}"><button>-</button></a></div>
+            {% else %}
+                <div>{{ user.usrname }} <a href="/add-friend?id={{ user.id }}"><button>+</button></a></div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {% if friend_list != [] %}
+            {% for friend in friend_list %}
+                <div><a href="/chat?id={{ friend.id }}">{{ friend.usrname }}</a> <a href="/del-friend?id={{ friend.id }}"><button>-</button></a></div>
+            {% endfor %}
+        {% else %}
+        <p>You have no friends add some now</p>
+        {% endif %}
+    {% endif %}
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+            {{ form.name.label(class="form-control-label") }}
+            {% if form.name.errors %}
+                {{ form.name(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.name.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.name(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+    </div>
+</form>
+<a href="/home"><button>Home</button></a>
+{% endblock body %}

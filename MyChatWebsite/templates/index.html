@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+<title>Chat</title>
+{% endblock %}
+
+{% block body %}
+<h1>Welcome to Chat</h1>
+<h2>If you have a account login, if not create one and start chatting.</h2>
+<a href="/login"><button>Login</button></a>
+<a href="/create_account"><button>Create account</button></a>
+{% endblock %}
